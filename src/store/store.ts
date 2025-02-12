@@ -14,6 +14,8 @@ interface CarStore {
     addRow: (newCar: ICar) => void;
     removeRow: (car: ICar) => void;
     updateRow: (car: ICar) => void;
+    saveState: (columnState: any) => void;
+    savedColumnState?: any;
 }
   
 const useStore = create<CarStore>((set) => ({
@@ -55,6 +57,13 @@ const useStore = create<CarStore>((set) => ({
         set((state) => ({
           rowData: state.rowData.map((c) => (c === car ? car : c)),
         }));
+    },
+
+    saveState: (columnState) => {
+        // For example, store it in localStorage or just keep it in memory
+        console.log("Saving column state to store:", columnState);
+        set({ savedColumnState: columnState }); // if you want to store it in state
+        // localStorage.setItem('columnState', JSON.stringify(columnState)); // or localStorage
     },
 }));
   
