@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { AllCommunityModule, ModuleRegistry, ColDef } from "ag-grid-community";
 import { AgGridReact } from "ag-grid-react";
 import useStore, { ICar } from "./store/store";
+import AddCarForm from "./AddCarForm";
 
 // Register the AG Grid modules
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -30,14 +31,19 @@ function App() {
 	const defaultColDef = useMemo(() => ({ flex: 1 }), []);
 
 	return (
-		<div style={{ width: "100%", height: "50vh" }}>
+		<div style={{ width: '100%', padding: '1rem' }}>
+		  {/* Render the separate form component */}
+		  <AddCarForm />
+	
+		  <div style={{ width: '100%', height: '80vh', marginTop: '1rem' }}>
 			<AgGridReact
-				rowData={rowData} 
-				columnDefs={colDefs as any}
-				defaultColDef={defaultColDef}
-				loading={loading}
-				loadingCellRenderer="agLoadingCellRenderer"
+			  rowData={rowData}
+			  columnDefs={colDefs as any}
+			  defaultColDef={defaultColDef}
+			  loading={loading}
+			  loadingCellRenderer="agLoadingCellRenderer"
 			/>
+		  </div>
 		</div>
 	);
 }

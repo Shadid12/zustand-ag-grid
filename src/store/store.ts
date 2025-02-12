@@ -11,6 +11,7 @@ interface CarStore {
     rowData: ICar[];
     loading: boolean;
     fetchRowData: () => void;
+    addRow: (newCar: ICar) => void;
 }
   
 const useStore = create<CarStore>((set) => ({
@@ -34,6 +35,12 @@ const useStore = create<CarStore>((set) => ({
             // Update the state with the fetched data
             set({ rowData: data, loading: false });
         }, 2000);
+    },
+
+    addRow: (newCar: ICar) => {
+        set((state) => ({
+          rowData: [...state.rowData, newCar],
+        }));
     },
 }));
   
