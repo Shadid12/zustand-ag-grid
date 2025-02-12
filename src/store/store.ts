@@ -12,6 +12,7 @@ interface CarStore {
     loading: boolean;
     fetchRowData: () => void;
     addRow: (newCar: ICar) => void;
+    removeRow: (car: ICar) => void;
 }
   
 const useStore = create<CarStore>((set) => ({
@@ -42,6 +43,12 @@ const useStore = create<CarStore>((set) => ({
           rowData: [...state.rowData, newCar],
         }));
     },
+
+    removeRow: (car: ICar) => {
+        set((state) => ({
+          rowData: state.rowData.filter((c) => c !== car),
+        }));
+    }
 }));
   
 export default useStore;

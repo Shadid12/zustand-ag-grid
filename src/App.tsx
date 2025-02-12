@@ -1,6 +1,6 @@
 // App.tsx
 import { useEffect, useMemo, useState } from "react";
-import { AllCommunityModule, ModuleRegistry, ColDef } from "ag-grid-community";
+import { AllCommunityModule, ModuleRegistry, ColDef, ICellRendererParams } from "ag-grid-community";
 import { AgGridReact } from "ag-grid-react";
 import useStore, { ICar } from "./store/store";
 import AddCarForm from "./AddCarForm";
@@ -20,12 +20,30 @@ function App() {
 		fetchRowData();
 	}, [fetchRowData]);
 
-	// Column Definitions remain the same
 	const [colDefs] = useState<ColDef<ICar>[]>([
 		{ field: "make", editable: true, filter: true },
 		{ field: "model" },
 		{ field: "price", editable: true },
 		{ field: "electric" },
+		{
+			headerName: "Remove",
+			// Inline cell renderer
+			cellRenderer: (params: ICellRendererParams<ICar>) => {
+			  // Access the store's removeRow method
+			  const removeRow = useStore((state) => state.removeRow);
+	  
+			return (
+				<button 
+				  onClick={() => params.data && removeRow(params.data)}
+				  disabled={!params.data}
+				>
+				  Remove
+				</button>
+			  );
+			},
+			// Optional: give it a fixed width
+			width: 120,
+		},
 	]);
 
 	const defaultColDef = useMemo(() => ({ flex: 1 }), []);
