@@ -1,6 +1,6 @@
 // App.tsx
 import { useEffect, useMemo, useState } from "react";
-import { AllCommunityModule, ModuleRegistry, ColDef, ICellRendererParams } from "ag-grid-community";
+import { AllCommunityModule, ModuleRegistry, ColDef, ICellRendererParams, CellValueChangedEvent } from "ag-grid-community";
 import { AgGridReact } from "ag-grid-react";
 import useStore, { ICar } from "./store/store";
 import AddCarForm from "./AddCarForm";
@@ -14,6 +14,8 @@ function App() {
 	const fetchRowData = 
 		useStore((state: { fetchRowData: any; }) => state.fetchRowData);
 	const loading = useStore((state) => state.loading);
+
+	const updateRow = useStore((state) => state.updateRow);
 
 	// When the component mounts, trigger the simulated API call
 	useEffect(() => {
@@ -46,6 +48,12 @@ function App() {
 		},
 	]);
 
+	const onCellValueChanged = (event: CellValueChangedEvent<ICar>) => {
+		// event.data is the entire updated row object 
+		// after the user has finished editing.
+		updateRow(event.data);
+	};
+
 	const defaultColDef = useMemo(() => ({ flex: 1 }), []);
 
 	return (
@@ -59,7 +67,7 @@ function App() {
 			  columnDefs={colDefs as any}
 			  defaultColDef={defaultColDef}
 			  loading={loading}
-			  loadingCellRenderer="agLoadingCellRenderer"
+			  onCellValueChanged={onCellValueChanged} 
 			/>
 		  </div>
 		</div>
